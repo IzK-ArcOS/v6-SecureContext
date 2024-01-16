@@ -1,3 +1,14 @@
-window#appTemplate { /* Rename appTemplate to the ID of the app */
-  color: #f0f;
+@import url("./header.css");
+@import url("./top.css");
+@import url("./actions.css");
+
+#SecureContext > div.body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+#SecureContext {
+  overflow: visible;
 }
