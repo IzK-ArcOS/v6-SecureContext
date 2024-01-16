@@ -13,6 +13,12 @@
   margin: 0;
 }
 
+#SecureContext > div.body div.top p.flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 #SecureContext > div.body div.top input.password-field {
   padding: 10px 15px;
 }

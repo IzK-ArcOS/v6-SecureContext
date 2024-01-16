@@ -17,7 +17,7 @@ export class Runtime extends AppRuntime {
     const args = process.args;
 
     function stop() {
-      ProcessStack.kill(process.pid)
+      ProcessStack.kill(process.pid, true)
 
       return this;
     }

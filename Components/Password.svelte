@@ -3,7 +3,7 @@
   export let password = "";
 </script>
 
-{#if !$UserDataStore.sh.securityNoPassword}
+{#if !$UserDataStore.sh.securityNoPassword && !$UserDataStore.sh.elevationDisabled}
   <input
     type="password"
     bind:value={password}

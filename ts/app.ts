@@ -3,6 +3,7 @@ import { Runtime } from "./runtime";
 import AppSvelte from "../App.svelte";
 import { App } from "$types/app";
 import { SecureIcon } from "$ts/images/general";
+import { isServiceRunning } from "$ts/service/interact";
 
 export const SecureContext: App = {
   metadata: {
@@ -10,14 +11,16 @@ export const SecureContext: App = {
     description: "Asks for confirmation to perform dangerous tasks",
     author: "The ArcOS Team",
     version: "1.0.0",
-    icon: SecureIcon
+    icon: SecureIcon,
+    hidden: true,
+    appGroup: "internal"
   },
   runtime: Runtime,
   content: AppSvelte,
   id: "SecureContext",
-  size: { w: 385, h: 360 },
-  minSize: { w: 385, h: 360 },
-  maxSize: { w: 385, h: 360 },
+  size: { w: 385, h: 370 },
+  minSize: { w: 385, h: 370 },
+  maxSize: { w: 385, h: 370 },
   pos: { x: 40, y: 40 },
   state: {
     minimized: false,
@@ -32,4 +35,5 @@ export const SecureContext: App = {
     close: false
   },
   singleInstance: true,
+  spawnCondition: () => isServiceRunning("ElevationService")
 }

@@ -52,18 +52,20 @@
   }
 
   function exit() {
-    ProcessStack.kill(runtime.pid);
+    ProcessStack.kill(runtime.pid, true);
   }
 </script>
 
 <div class="actions">
   <div class="right">
     <button class="reject" on:click={reject}>Reject</button>
-    <button
-      class="approve level-{ElevationLevel[data.level]}"
-      on:click={approve}
-    >
-      Approve
-    </button>
+    {#if !$UserDataStore.sh.elevationDisabled}
+      <button
+        class="approve level-{ElevationLevel[data.level]}"
+        on:click={approve}
+      >
+        Approve
+      </button>
+    {/if}
   </div>
 </div>
