@@ -2,11 +2,43 @@
 @import url("./top.css");
 @import url("./actions.css");
 
+#shade-SecureContext {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-image: var(--wallpaper);
+  filter: brightness(0.5);
+  transition: none !important;
+  z-index: 10000000000;
+}
+
+#SecureContext {
+  z-index: 100000000000;
+}
+
 #SecureContext > div.body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 0;
   border-radius: 9px;
+}
+#SecureContext > div.titlebar {
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+}
+
+#SecureContext div.overlay-shade {
+  border-radius: 9px;
+}
+
+#SecureContext:not(.overlay) > div.body {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 #SecureContext {

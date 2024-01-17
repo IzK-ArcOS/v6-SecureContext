@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { UserName } from "$ts/stores/user";
   import { ElevationData } from "$types/elevation";
   import { onMount } from "svelte";
+  import Actions from "./Components/Actions.svelte";
   import Display from "./Components/Display.svelte";
   import Header from "./Components/Header.svelte";
+  import Notice from "./Components/Notice.svelte";
   import Password from "./Components/Password.svelte";
   import "./css/main.css";
   import { Runtime } from "./ts/runtime";
-  import { UserName } from "$ts/stores/user";
-  import Actions from "./Components/Actions.svelte";
-  import Notice from "./Components/Notice.svelte";
 
   export let runtime: Runtime;
 

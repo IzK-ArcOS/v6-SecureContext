@@ -13,7 +13,8 @@ export const SecureContext: App = {
     version: "1.0.0",
     icon: SecureIcon,
     hidden: true,
-    appGroup: "internal"
+    appGroup: "internal",
+    noCloseAccelerator: true
   },
   runtime: Runtime,
   content: AppSvelte,
