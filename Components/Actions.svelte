@@ -1,4 +1,5 @@
 <script lang="ts">
+  import HtmlSpinner from "$lib/Components/HtmlSpinner.svelte";
   import { ErrorIcon } from "$ts/images/dialog";
   import { GlobalDispatch } from "$ts/process/dispatch/global";
   import { createErrorDialog } from "$ts/process/error";
@@ -13,10 +14,15 @@
   export let password: string;
   export let runtime: Runtime;
 
+  let loading = false;
+
   async function approve() {
+    loading = true;
     const valid =
       $UserDataStore.sh.securityNoPassword ||
       (await Authenticate($UserName, password, false));
+
+    loading = false;
 
     if (!valid) {
       createErrorDialog(
@@ -63,8 +69,15 @@
       <button
         class="approve level-{ElevationLevel[data.level]}"
         on:click={approve}
+        disabled={!$UserDataStore.sh.securityNoPassword &&
+          !password &&
+          !loading}
       >
-        Approve
+        {#if loading}
+          <HtmlSpinner height={16} />
+        {:else}
+          Approve
+        {/if}
       </button>
     {/if}
   </div>
