@@ -21,4 +21,5 @@
 
 #SecureContext > div.body div.top input.password-field {
   padding: 10px 15px;
+  width: 100%;
 }
