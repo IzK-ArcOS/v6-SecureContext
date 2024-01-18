@@ -34,12 +34,13 @@
   }
 
   async function approve() {
+    if (loading) return; // Prevent spamming
+
     loading = true;
+
     const valid =
       $UserDataStore.sh.securityNoPassword ||
       (await Authenticate($UserName, password, false));
-
-    loading = false;
 
     if (!valid) {
       createErrorDialog(
@@ -52,7 +53,9 @@
           buttons: [
             {
               caption: "Okay",
-              action() {},
+              action() {
+                loading = false;
+              },
               suggested: true,
             },
           ],
@@ -79,7 +82,7 @@
     <p class="what">{@html data.what}</p>
     <Display {data} />
     <Notice />
-    <Password bind:password {approve} />
+    <Password bind:password bind:loading {approve} />
     <div class="login-status">
       <p class="whoami">Authorizing as {$UserName}</p>
       <button class="link settings">Security Settings</button>

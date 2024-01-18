@@ -3,6 +3,7 @@
 
   export let password = "";
   export let approve: () => void;
+  export let loading: boolean;
 
   function submit(e: SubmitEvent) {
     e.preventDefault();
@@ -18,6 +19,7 @@
       bind:value={password}
       placeholder="Password"
       class="password-field"
+      disabled={loading}
     />
   </form>
 {/if}
