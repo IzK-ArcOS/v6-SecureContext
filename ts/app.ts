@@ -1,9 +1,8 @@
-import { DefaultIcon } from "$ts/images/apps";
-import { Runtime } from "./runtime";
-import AppSvelte from "../App.svelte";
-import { App } from "$types/app";
 import { SecureIcon } from "$ts/images/general";
 import { isServiceRunning } from "$ts/service/interact";
+import { App } from "$types/app";
+import AppSvelte from "../App.svelte";
+import { Runtime } from "./runtime";
 
 export const SecureContext: App = {
   metadata: {
