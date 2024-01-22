@@ -1,7 +1,10 @@
 <script lang="ts">
+  import { ErrorIcon } from "$ts/images/dialog";
+  import { GlobalDispatch } from "$ts/process/dispatch/global";
+  import { createErrorDialog } from "$ts/process/error";
+  import { Authenticate } from "$ts/server/user/auth";
+  import { ProcessStack } from "$ts/stores/process";
   import { UserDataStore, UserName } from "$ts/stores/user";
-  import { ElevationData } from "$types/elevation";
-  import { onMount } from "svelte";
   import Actions from "./Components/Actions.svelte";
   import Display from "./Components/Display.svelte";
   import Header from "./Components/Header.svelte";
@@ -9,26 +12,16 @@
   import Password from "./Components/Password.svelte";
   import "./css/main.css";
   import { Runtime } from "./ts/runtime";
-  import { ErrorIcon } from "$ts/images/dialog";
-  import { createErrorDialog } from "$ts/process/error";
-  import { GlobalDispatch } from "$ts/process/dispatch/global";
-  import { Authenticate } from "$ts/server/user/auth";
-  import { ProcessStack } from "$ts/stores/process";
 
   export let runtime: Runtime;
 
+  const { id, data } = runtime;
+
   let password: string;
-  let id: number;
-  let data: ElevationData;
   let loading = false;
 
-  onMount(() => {
-    runtime.data.subscribe((v) => (data = v));
-    runtime.id.subscribe((v) => (id = v));
-  });
-
   async function reject() {
-    GlobalDispatch.dispatch<[number]>("elevation-reject", [id]);
+    GlobalDispatch.dispatch<[number]>("elevation-reject", [$id]);
 
     exit();
   }
@@ -66,7 +59,7 @@
       return;
     }
 
-    GlobalDispatch.dispatch<[number]>("elevation-accept", [id]);
+    GlobalDispatch.dispatch<[number]>("elevation-accept", [$id]);
 
     exit();
   }
@@ -76,11 +69,11 @@
   }
 </script>
 
-{#if id && data}
-  <Header {data} />
+{#if $id && $data}
+  <Header data={$data} />
   <div class="top">
-    <p class="what">{@html data.what}</p>
-    <Display {data} />
+    <p class="what">{@html $data.what}</p>
+    <Display data={$data} />
     <Notice />
     <Password bind:password bind:loading {approve} />
     <div class="login-status">
@@ -88,5 +81,5 @@
       <button class="link settings">Security Settings</button>
     </div>
   </div>
-  <Actions {data} {password} {approve} {reject} {loading} />
+  <Actions data={$data} {password} {approve} {reject} {loading} />
 {/if}
