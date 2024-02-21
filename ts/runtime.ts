@@ -17,12 +17,12 @@ export class Runtime extends AppRuntime {
     const args = process.args;
 
     function stop() {
-      ProcessStack.kill(process.pid, true)
+      ProcessStack.kill(process.pid, true);
 
       return this;
     }
 
-    if (args.length < 2) return stop()
+    if (args.length < 2) return stop();
 
     const [id, data] = args as [string, ElevationData];
 
@@ -31,6 +31,6 @@ export class Runtime extends AppRuntime {
     this.id.set(id);
     this.data.set(data);
 
-    ArcSoundBus.playSound("arcos.dialog.info")
+    ArcSoundBus.playSound("arcos.dialog.info");
   }
 }

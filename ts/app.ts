@@ -13,7 +13,7 @@ export const SecureContext: App = {
     icon: SecureIcon,
     hidden: true,
     appGroup: "internal",
-    noCloseAccelerator: true
+    noCloseAccelerator: true,
   },
   runtime: Runtime,
   content: AppSvelte,
@@ -27,13 +27,13 @@ export const SecureContext: App = {
     maximized: false,
     headless: false,
     fullscreen: false,
-    resizable: false
+    resizable: false,
   },
   controls: {
     minimize: false,
     maximize: false,
-    close: false
+    close: false,
   },
   singleInstance: true,
-  spawnCondition: () => isServiceRunning("ElevationService")
-}
+  spawnCondition: () => isServiceRunning("ElevationService"),
+};

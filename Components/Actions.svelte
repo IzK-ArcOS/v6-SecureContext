@@ -17,9 +17,7 @@
       <button
         class="approve level-{ElevationLevel[data.level]}"
         on:click={approve}
-        disabled={!$UserDataStore.sh.securityNoPassword &&
-          !password &&
-          !loading}
+        disabled={!$UserDataStore.sh.securityNoPassword && !password && !loading}
       >
         {#if loading}
           <HtmlSpinner height={16} />

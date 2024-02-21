@@ -32,15 +32,13 @@
     loading = true;
 
     const valid =
-      $UserDataStore.sh.securityNoPassword ||
-      (await Authenticate($UserName, password, false));
+      $UserDataStore.sh.securityNoPassword || (await Authenticate($UserName, password, false));
 
     if (!valid) {
       createErrorDialog(
         {
           title: "Authentication failed",
-          message:
-            "The password you entered is incorrect. Please try typing it again.",
+          message: "The password you entered is incorrect. Please try typing it again.",
           sound: "arcos.dialog.error",
           image: ErrorIcon,
           buttons: [
@@ -54,7 +52,7 @@
           ],
         },
         runtime.pid,
-        true
+        true,
       );
       return;
     }
