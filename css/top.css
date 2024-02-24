@@ -23,3 +23,6 @@
   padding: 10px 15px;
   width: 100%;
 }
+#SecureContext > div.body div.top p.notice span.material-icons-round {
+  min-width: 24px;
+}
