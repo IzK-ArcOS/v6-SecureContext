@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { ErrorIcon } from "$ts/images/dialog";
+  import { OpenSettingsPage } from "$apps/Settings/ts/main";
+  import { ErrorIcon, WarningIcon } from "$ts/images/dialog";
   import { GlobalDispatch } from "$ts/process/dispatch/global";
   import { createErrorDialog } from "$ts/process/error";
   import { Authenticate } from "$ts/server/user/auth";
@@ -65,6 +66,34 @@
   function exit() {
     ProcessStack.kill(runtime.pid, true);
   }
+
+  function settings() {
+    createErrorDialog(
+      {
+        title: "Cancel elevation?",
+        message:
+          "Going to the security settings from here will cancel the elevation request. Are you sure?",
+        sound: "arcos.dialog.warning",
+        image: WarningIcon,
+        buttons: [
+          {
+            caption: "Stay here",
+            action() {},
+          },
+          {
+            caption: "Continue",
+            action() {
+              OpenSettingsPage("security");
+              reject();
+            },
+            suggested: true,
+          },
+        ],
+      },
+      runtime.pid,
+      true,
+    );
+  }
 </script>
 
 {#if $id && $data}
@@ -76,7 +105,7 @@
     <Password bind:password bind:loading {approve} />
     <div class="login-status">
       <p class="whoami">Authorizing as {$UserName}</p>
-      <button class="link settings">Security Settings</button>
+      <button class="link settings" on:click={settings}>Security Settings</button>
     </div>
   </div>
   <Actions data={$data} {password} {approve} {reject} {loading} />
