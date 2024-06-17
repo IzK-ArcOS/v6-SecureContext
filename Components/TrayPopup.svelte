@@ -1,7 +1,49 @@
 <script lang="ts">
+  import { changeTrayIconImage } from "$apps/Shell/ts/tray";
+  import { TrayIcon } from "$apps/Shell/types/tray";
+  import { GetUserElevation } from "$ts/elevation";
   import { SecurityHighIcon, SecurityLowIcon, SecurityMediumIcon } from "$ts/images/general";
   import { LockIcon } from "$ts/images/power";
+  import { ElevationEnableNoPassword } from "$ts/stores/elevation";
+  import { ProcessStack } from "$ts/stores/process";
   import { UserDataStore as user } from "$ts/stores/user";
+  import { onMount } from "svelte";
+
+  export let icon: TrayIcon;
+
+  async function togglePassword() {
+    if (!$user.sh.securityNoPassword) {
+      const elevated = await GetUserElevation(ElevationEnableNoPassword(), ProcessStack);
+
+      if (!elevated) return;
+
+      $user.sh.securityNoPassword = true;
+
+      return;
+    }
+
+    $user.sh.securityNoPassword = false;
+  }
+
+  onMount(() => {
+    let previousState = SecurityLowIcon;
+
+    user.subscribe((v) => {
+      const state = v.sh.bypassElevation
+        ? SecurityHighIcon
+        : v.sh.elevationDisabled
+          ? LockIcon
+          : v.sh.securityNoPassword
+            ? SecurityMediumIcon
+            : SecurityLowIcon;
+
+      if (state == previousState) return;
+
+      previousState = state;
+
+      changeTrayIconImage(icon.identifier, state);
+    });
+  });
 </script>
 
 <div class="top">
@@ -10,7 +52,7 @@
       disabled={$user.sh.elevationDisabled || $user.sh.bypassElevation}
       class="material-icons-round"
       class:suggested={!$user.sh.securityNoPassword}
-      on:click={() => ($user.sh.securityNoPassword = !$user.sh.securityNoPassword)}
+      on:click={togglePassword}
     >
       vpn_key
     </button>
