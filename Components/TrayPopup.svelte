@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { OpenSettingsPage } from "$apps/Settings/ts/main";
+  import { TrayIconOpened } from "$apps/Shell/ts/stores";
   import { changeTrayIconImage } from "$apps/Shell/ts/tray";
   import { TrayIcon } from "$apps/Shell/types/tray";
   import { GetUserElevation } from "$ts/elevation";
@@ -6,10 +8,12 @@
   import { LockIcon } from "$ts/images/power";
   import { ElevationEnableNoPassword } from "$ts/stores/elevation";
   import { ProcessStack } from "$ts/stores/process";
-  import { UserDataStore as user } from "$ts/stores/user";
+  import { UserDataStore, UserDataStore as user } from "$ts/stores/user";
+  import { ReadableStore } from "$types/writable";
   import { onMount } from "svelte";
 
   export let icon: TrayIcon;
+  export let openedTray: ReadableStore<string>;
 
   async function togglePassword() {
     if (!$user.sh.securityNoPassword) {
@@ -44,31 +48,44 @@
       changeTrayIconImage(icon.identifier, state);
     });
   });
+
+  function settings() {
+    $TrayIconOpened = false;
+    $openedTray = "";
+    OpenSettingsPage("security");
+  }
 </script>
 
 <div class="top">
-  <div class="setting" class:disabled={$user.sh.elevationDisabled || $user.sh.bypassElevation}>
-    <button
-      disabled={$user.sh.elevationDisabled || $user.sh.bypassElevation}
-      class="material-icons-round"
-      class:suggested={!$user.sh.securityNoPassword}
-      on:click={togglePassword}
-    >
-      vpn_key
-    </button>
-    <p class="caption">Password</p>
-  </div>
-  <div class="setting" class:disabled={$user.sh.bypassElevation}>
-    <button
-      disabled={$user.sh.bypassElevation}
-      class="material-icons-round"
-      class:suggested={$user.sh.elevationDisabled}
-      on:click={() => ($user.sh.elevationDisabled = !$user.sh.elevationDisabled)}
-    >
-      lock
-    </button>
-    <p class="caption">Lockdown</p>
-  </div>
+  {#if !$UserDataStore.sh.bypassElevation}
+    <div class="setting" class:disabled={$user.sh.elevationDisabled || $user.sh.bypassElevation}>
+      <button
+        disabled={$user.sh.elevationDisabled || $user.sh.bypassElevation}
+        class="material-icons-round"
+        class:suggested={!$user.sh.securityNoPassword}
+        on:click={togglePassword}
+      >
+        vpn_key
+      </button>
+      <p class="caption">Password</p>
+    </div>
+    <div class="setting" class:disabled={$user.sh.bypassElevation}>
+      <button
+        disabled={$user.sh.bypassElevation}
+        class="material-icons-round"
+        class:suggested={$user.sh.elevationDisabled}
+        on:click={() => ($user.sh.elevationDisabled = !$user.sh.elevationDisabled)}
+      >
+        lock
+      </button>
+      <p class="caption">Lockdown</p>
+    </div>
+  {:else}
+    <div class="disabled-notice">
+      <p>Elevation is disabled!</p>
+      <button class="suggested" on:click={settings}>Open settings</button>
+    </div>
+  {/if}
 </div>
 <div class="bottom">
   <img
@@ -84,7 +101,7 @@
   <div class="sep" />
   <span
     >{$user.sh.bypassElevation
-      ? "At risk"
+      ? "At risk!"
       : $user.sh.elevationDisabled
         ? "In lockdown"
         : $user.sh.securityNoPassword
@@ -98,6 +115,7 @@
     padding: 20px;
     display: flex;
     justify-content: space-between;
+    max-height: 98px;
   }
 
   div.setting {
@@ -156,5 +174,15 @@
     width: 1px;
     height: 20px;
     background-color: var(--button-glass-hover-bg);
+  }
+
+  div.top div.disabled-notice {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
   }
 </style>
