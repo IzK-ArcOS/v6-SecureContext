@@ -108,6 +108,7 @@
           ? "Mildly insecure"
           : "All is good"}
   </span>
+  <button class="material-icons-round" on:click={settings}>settings</button>
 </div>
 
 <style>
@@ -184,5 +185,14 @@
     align-items: center;
     flex-direction: column;
     gap: 5px;
+  }
+
+  div.bottom button.material-icons-round {
+    margin: 0;
+    margin-left: auto;
+    margin-right: 5px;
+    padding: 0;
+    font-size: 20px;
+    background-color: transparent;
   }
 </style>
