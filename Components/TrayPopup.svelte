@@ -26,7 +26,7 @@
   }
 
   onMount(() => {
-    let previousState = SecurityLowIcon;
+    let previousState = "";
 
     user.subscribe((v) => {
       const state = v.sh.bypassElevation
